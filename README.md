@@ -15,7 +15,7 @@ The project contains sveral files and directories:
     #storage: directory to maintain project uploaded files
 
 # Usage
-Choose the master branch in this repository to get the code.
+Choose the main branch in this repository to get the code.
 
 Install all dependencies
 ```sh
