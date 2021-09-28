@@ -4,6 +4,15 @@ const http = require('http');
 const logger = require('morgan');
 
 const http_errors = require('http-errors');
+const db = require('./middlewares/database');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const auth_route = require('./routes/authRoutes');
+const users_route = require('./routes/userRoutes');
+const authors_route = require('./routes/authorRoutes');
+const books_route = require('./routes/bookRoutes');
+
 let port = process.env.port || '3000';
 
 
@@ -28,6 +37,16 @@ app.use(function (req, res, next) {
     }
     next();
 });
+
+const swaggerDocs = require('./swaggerOptions');
+let swaggerdocs = swaggerJsDoc(swaggerDocs.swaggerDocs);
+
+app.use('/public', express.static(__dirname + '/storage'));
+app.use('/bookStore/api/documentation', swaggerUi.serve, swaggerUi.setup(swaggerdocs));
+app.use('/api/auth', auth_route);
+app.use('/api/users', users_route);
+app.use('/api/authors', authors_route);
+app.use('/api/books', books_route);
 
 // error handler
 app.use(function (err, req, res, next) {
