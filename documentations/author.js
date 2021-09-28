@@ -59,7 +59,7 @@
 /**
  * @swagger
  * post:
- * /api/authors/new:
+ * /api/authors/:
  *  post:
  *    security:
  *      - Bearer: []

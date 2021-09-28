@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/check-existance', check_auth, authorController.checkExistance);
 
-router.post('/new', check_auth, upload.single('image'), authorController.create);
+router.post('/', check_auth, upload.single('image'), authorController.create);
 
 router.get('/:per_page/:page_number', check_auth, authorController.list);
 

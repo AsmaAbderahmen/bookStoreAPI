@@ -59,7 +59,7 @@
 /**
  * @swagger
  * post:
- * /api/books/new:
+ * /api/books/:
  *  post:
  *    security:
  *      - Bearer: []

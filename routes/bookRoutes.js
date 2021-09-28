@@ -10,7 +10,7 @@ router.get('/:per_page/:page_number', check_auth, bookController.list);
 
 router.post('/check-existance', check_auth, bookController.checkExistance);
 
-router.post('/new', check_auth, upload.single('image'), bookController.create);
+router.post('/', check_auth, upload.single('image'), bookController.create);
 
 router.post('/:_id', check_auth, upload.single('image'), bookController.update);
 
