@@ -26,7 +26,6 @@ exports.send_mail= async (data)=>{
     * }
     * 
     * */
-console.log('on email')
     let mailOptions = {
         from: contact,
         to: data.email,
@@ -36,7 +35,7 @@ console.log('on email')
     };
 
     await transporter.sendMail(mailOptions).then(async (info, error)=> {
-     console.log('info', info)
+
         if (error) {
             console.log('on erropor', error)
             return ('error')

@@ -192,7 +192,7 @@ exports.change_password = async (req, res, next) => {
             await bcrypt.compare(old_password, user_data.password, async (err, result) => {
                 if (result) {
                     if (old_password == new_password) {
-                        return res.status(409).json({ status: 406, message: "using same old password" });
+                        return res.status(409).json({ status: 409, message: "using same old password" });
                     } else {
                         await User.updateOne({ _id: _id }, { password: await hash_password(new_password) });
                         return res.status(200).json({ status: 200, message: "updated" })
