@@ -1,5 +1,9 @@
 const Book = require('../models/booksModel');
 
+ function paginate(array, page_size, page_number) {
+    return array.slice((page_number - 1) * page_size, page_number * page_size);
+}
+
 exports.checkExistance = async function (req, res, next) {
     let name = req.body.name.toLowerCase();
     try {
@@ -69,23 +73,13 @@ exports.create = async function (req, res, next) {
 };
 
 exports.list = async function (req, res, next) {
-
     let page = Number(req.params.page_number)
     let per_page = Number(req.params.per_page)
 
     try {
-
-        const books = await Book.find({}, '_id author name image pages price',
-            {
-                skip: ((per_page * page) - per_page),
-                limit: per_page,
-                populate: {
-                    path: 'author',
-                    select: '_id fullname biography image'
-                }
-            })
-            .sort({ createdAt: -1 })
-
+        const books = await Book.find({}, '_id author name image pages price')
+            .populate('author', '_id fullname biography image')
+            .sort({ updatedAt: -1 })
         let count = await Book.countDocuments();
 
         return res.status(200).json({
@@ -93,7 +87,7 @@ exports.list = async function (req, res, next) {
                 total_count: count,
                 current_page: Number(page),
                 total_pages: Math.ceil(count / per_page),
-                books: books.map((book) => {
+                books: paginate(books, per_page, page).map((book) => {
                     return ({
                         _id: book._id,
                         name: book.name,
@@ -112,6 +106,7 @@ exports.list = async function (req, res, next) {
         });
 
     } catch (error) {
+        
         return res.status(500).json({ status: 500, message: 'server error' })
     }
 };

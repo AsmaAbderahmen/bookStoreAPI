@@ -1,5 +1,9 @@
 const Author = require('../models/authorsModel');
 
+function paginate(array, page_size, page_number) {
+    return array.slice((page_number - 1) * page_size, page_number * page_size);
+}
+
 exports.checkExistance = async function (req, res, next) {
     let fullname = req.body.fullname;
     try {
@@ -66,20 +70,16 @@ exports.list = async function (req, res, next) {
     let per_page = Number(req.params.per_page)
 
     try {
-        const authors = await Author.find({}, 'fullname _id image',
-            {
-                limit: per_page,
-                skip: (per_page * page) - per_page
-            })
-
-        let count = await Author.countDocuments();
+        const authors = await Author.find({}, 'fullname _id image')
+            .sort({ updatedAt: -1 })
+        let count = authors.length;
 
         return res.status(200).json({
             status: 200, message: 'list of authors', data: {
                 total_count: count,
                 current_page: Number(page),
                 total_pages: Math.ceil(count / per_page),
-                authors: authors.map((a) => {
+                authors: paginate(authors, per_page, page).map((a) => {
                     return ({
                         _id: a._id,
                         fullname: a.fullname,
