@@ -3,7 +3,7 @@ bookStoreAPI is  a RestFullAPI to manage a book store
 
 # project
 
-The project contains sveral files and directories:
+The project contains several files and directories:
     #index.js: the entry point of the project
     #package.json : the heart of the project wish contain all its dependencies
     #saggerOptions: a js file that contains the project documentation; tags and definitions
